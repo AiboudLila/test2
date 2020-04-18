@@ -1,14 +1,8 @@
-import numpy as np  # pas utilisé !
-import matplotlib.pyplot as plt # pas utilisé !
-import string # pas utilisé
+
 import nltk
-from nltk.tokenize import sent_tokenize  # pas utilisé et importé deux fois !!
 import pandas as pd 
-from keras.preprocessing.text import one_hot # pas utilisé
 from keras.preprocessing.text import text_to_word_sequence 
 from keras.preprocessing.text import Tokenizer
-from nltk import sent_tokenize # pas utilisé et importé deux fois !!
-from nltk.tokenize import word_tokenize # pas utilisé
 from nltk.corpus import stopwords
 
 class Data_Processing:
