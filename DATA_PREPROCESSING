@@ -1,0 +1,57 @@
+import numpy as np 
+import matplotlib.pyplot as plt
+import string
+import nltk
+from nltk.tokenize import sent_tokenize
+import pandas as pd 
+from keras.preprocessing.text import one_hot
+from keras.preprocessing.text import text_to_word_sequence
+from keras.preprocessing.text import Tokenizer
+from nltk import sent_tokenize
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+
+
+data = pd.read_csv(r'C:\Users\TRETEC\Desktop\MEMOIRE\data.csv')
+data = data.fillna(data['subject'].value_counts().index[0])
+data['subject'] = data['subject'].astype('str')
+
+
+#la fonction clean
+
+def preprocess_text(text_messages):
+    processed = list(text_messages)
+    for id, element in enumerate(processed):
+        processed[id] = processed[id].replace(r'£|\$', 'moneysymb')
+
+        processed[id] = processed[id].replace(r'^\(?[\d]{3}\)?[\s-]?[\d]{3}[\s-]?[\d]{4}$',
+                                      'phonenumbr')
+        processed[id] = processed[id].replace(r'\d+(\.\d+)?', 'numbr')
+        processed[id] = processed[id].replace(r'[^\w\d\s]', ' ')
+        processed[id] = processed[id].replace(r'\s+', ' ')      
+        processed[id] = processed[id].replace(r'^\s+|\s+?$', '')
+        processed[id] = processed[id].lower()
+        stop_words = set(stopwords.words('english'))
+        ps = nltk.PorterStemmer()
+        for _id, _element in enumerate(processed):
+            elementsplited = _element.split()
+            for el in elementsplited:
+                if el in stop_words:
+                    elementsplited.remove(el)
+            split = "".join(elementsplited)
+            print(' 2 en 1')
+            processed[id] = ps.stem(split)
+    return processed
+
+
+#TOKENIZE_Function
+
+def tokenize(text):
+    for i in text: 
+        txt = i
+        tokens = text_to_word_sequence(txt)
+        tokenizer = Tokenizer()
+        tokenizer.fit_on_texts(tokens)
+        token = tokenizer.texts_to_matrix(tokens)
+        return token
+preprocess_text(data['subject'])
